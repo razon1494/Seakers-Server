@@ -20,6 +20,7 @@ async function run() {
       console.log('connected to databse from tour server');
       const database=client.db("TourDb");
       const servicesCollection=database.collection("services");
+      const bookingCollection=database.collection("bookings");
     //GET API
       app.get('/services', async (req, res) => {
           const cursor=servicesCollection.find({});
@@ -33,23 +34,31 @@ async function run() {
           const query={_id: ObjectId(id)};
           const service=await servicesCollection.findOne(query);
           res.json(service);
-
-
       })
-
-    // POST API
-      app.post('/services', async (req, res) => {
+    //add bookings POST API
+      app.post('/placeorder', async (req, res) => {
           const service=req.body;
           console.log('result hitted the post api', service);
-          const result=await servicesCollection.insertOne(service);
+          const result=await bookingCollection.insertOne(service);
           console.log(result);
           res.send(result);
       });
+
+     // my bookings
+
+  app.get("/mybookings/:email", async (req, res) => {
+    const result = await bookingCollection.find({
+      email: req.params.email,
+    }).toArray();
+    res.send(result);
+  });
       //DELETE API
-      app.delete('/services/:id', async (req, res) => {
-          const id=req.params.id;
-          const query={_id: ObjectId(id)};
-          const result=await servicesCollection.deleteOne(query);
+      app.delete('/deletebooking/:id', async (req, res) => {
+        const id=req.params.id;
+        console.log(id);
+        const query={_id: id};
+        console.log(query);
+          const result=await bookingCollection.deleteOne(query);
           res.json(result);
       })
   } finally {
