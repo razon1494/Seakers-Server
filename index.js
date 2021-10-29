@@ -27,6 +27,11 @@ async function run() {
           const services=await cursor.toArray();
           res.send(services);
       })
+      app.get('/managebookings', async (req, res) => {
+          const cursor=bookingCollection.find({});
+          const services=await cursor.toArray();
+          res.send(services);
+      })
       //GET Single Service
       app.get('/services/:id', async (req, res) => {
           const id=req.params.id;
