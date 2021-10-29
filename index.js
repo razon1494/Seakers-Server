@@ -79,7 +79,7 @@ async function run() {
 
       res.json(result);
     })
-      //DELETE API
+      //DELETE API from database
       app.delete('/deletebooking/:id', async (req, res) => {
         const id=req.params.id;
         console.log(id);
