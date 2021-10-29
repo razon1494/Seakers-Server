@@ -49,6 +49,13 @@ async function run() {
           res.send(result);
       });
 
+    //add new tour POST API
+    app.post('/addservice', async (req, res) => {
+      const service=req.body;
+      const result=await servicesCollection.insertOne(service);
+      res.json(result);
+    })
+
      // my bookings
 
   app.get("/mybookings/:email", async (req, res) => {
@@ -57,6 +64,21 @@ async function run() {
     }).toArray();
     res.send(result);
   });
+    //update Status
+    app.put('/services/:id', async (req, res) => {
+      const id=req.params.id;
+      console.log('Updating', id);
+      const filter={_id: id};
+      const options={upsert: true};
+      const updateDoc={
+        $set: {
+          status: true
+        },
+      };
+      const result=await bookingCollection.updateOne(filter, updateDoc, options);
+
+      res.json(result);
+    })
       //DELETE API
       app.delete('/deletebooking/:id', async (req, res) => {
         const id=req.params.id;
