@@ -94,7 +94,7 @@ async function run() {
 }
 run().catch(console.dir);
 
-
+//for checking database is working or not
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
